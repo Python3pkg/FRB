@@ -3,8 +3,8 @@ if version_info[0] >= 3:
     from urllib.parse import urlencode
     from urllib.request import Request, urlopen
 else:
-    from urllib import urlencode
-    from urllib2 import Request, urlopen
+    from urllib.parse import urlencode
+    from urllib.request import Request, urlopen
 
 import fred.config as c
 from json import loads
@@ -53,7 +53,7 @@ def _data_frame(content):
     to a pandas dataframe for additional manipulation.
     """
     response = loads(content)
-    key = [x for x in response.keys() if x in c.response_data][0]
+    key = [x for x in list(response.keys()) if x in c.response_data][0]
     frame = DataFrame(response[key])
     final_frame = _convert(frame)
     return final_frame
